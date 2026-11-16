@@ -1,0 +1,194 @@
+\documentclass[11pt]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,bm}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage[hidelinks]{hyperref}
+\usepackage[authoryear,round]{natbib}
+
+\graphicspath{{figures/}}
+
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{assumption}[theorem]{Assumption}
+
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\title{Bifurcation Bracketing via Asymptotic Stability Score}
+\author{}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+
+\section{Defintions}
+
+\begin{definition}[System]
+Our system is a nonlinear discrete dynamical system modelling predator-prey interactions with cyclic migration. For fixed Lotka–Volterra parameters
+\[
+\theta=(a,b,c,d,e,f)
+\]and conflict parameter \(\alpha\), one iteration consists of the Lotka–Volterra update \(U_\theta\), normalization \(\mathcal N\), the conflict interaction \(C_\alpha\),
+and inverse normalization \(\mathcal N^{-1}\) \citep{Albeverio01042008}. We therefore write the complete one-step transformation as
+\[
+F_\alpha
+=
+\mathcal N^{-1}\circ C_\alpha\circ\mathcal N\circ U_\theta.
+\]For notational simplicity, the full transformation is denoted by \(F_\alpha\).
+We define the state
+\[
+x=(\mathbf P,\mathbf R)
+=(P_1,P_2,R_1,R_2)\in X\subseteq\mathbb R^4,
+\]where \(\mathbf P=(P_1,P_2)\) and \(\mathbf R=(R_1,R_2)\) represent the two populations across the two patches \citep{Albeverio01042008}. The dynamics are then
+\[
+x_{t+1}=F_\alpha(x_t).
+\]
+During each simulation, both \(\theta\) and \(\alpha\) are held fixed. The parameter \(\alpha\) is varied only between simulations for the
+purpose of bifurcation analysis,
+giving the one-parameter family \(\{F_\alpha\}_{\alpha\in[-1,1]}\).
+\end{definition}
+
+\begin{definition}[Topological equivalence]
+A dynamical system is called topologically equivalnt to another if there is a homeomorphism
+\(h:\mathbb R^n\to\mathbb R^n\) mapping orbits of the first system to orbits of the second system,
+preserving the direction of time \citep{Kuznetsov2023}.
+\end{definition}
+
+\begin{definition}[Conjugacy of maps]
+Two maps \(f\) and \(g\) are called conjugate if there is a homeomorphism \(h:\mathbb R^n\to\mathbb R^n\) such that
+\(h\circ f = g\circ h\) \citep{Kuznetsov2023}.
+\end{definition}
+
+\begin{definition}[Structural stability]
+A system is structurally stable if there is a \(C^1\) neighborhood
+\(\mathcal U\) of \(F\) such that every \(G \in \mathcal U\) is topologically conjugate to \(F\) \citep{Kuznetsov2023}.
+\end{definition}
+
+\begin{definition}[Bifurcation]
+Kuznetsov (2023) defines a bifurcation as "The appearance of a topologically nonequivalent phase
+portrait under variation of parameters" \citep{Kuznetsov2023}.
+\end{definition}
+
+\begin{definition}[stability score]
+Let \((X, d)\) be a metric space where \(X\) is our system's state space and \(d\) is the \(L_1\) distance function where \(d(x, y) = \| x - y \|_1\).
+We define the stability score as 
+\[
+S(\alpha) = \lim_{T \to \infty} \frac{1}{T} \sum_{t=0}^{T} d(x_{t+1}, x_t),
+\]
+where \(x_t = (p_t, r_t) \in \mathbb R^2\) is the state of the system at time \(t\).
+\end{definition}
+
+\section{Main Result}
+
+\begin{theorem}
+For \(F_\alpha(x) := F(x; \theta, \alpha)\) where \(\theta\) is fixed and exists \(\alpha, \alpha' \in [-1, 1]\) such that
+\(\alpha < \alpha'\)
+\(S(\alpha)\cdot S(\alpha') = 0\) and \(S(\alpha) + S(\alpha') > 0\) then exists bifurcation parameter \(\alpha^* \in [\alpha, \alpha']\).
+\end{theorem}
+
+The proof proceeds in three stages. First lemma 8 and lemma 9, show respectively that a fixed-point convergence implies that \(S(\alpha) = 0\)
+and a non-trivial periodic attractor implies that \(S(\alpha) > 0\).
+Then, lemma 10 shows that the endpoint attractors are not topologically conjugate. 
+Finally, we combine these results to obtain the proof of theorem 7.
+
+\begin{lemma}
+A fixed-point convergence implies that S = 0.
+\end{lemma}
+
+\begin{proof}
+Suppose that \(x_t \to x^*\) as \(t \to \infty\). Then \(x_{t+1} \to x^*\) as \(t \to \infty\). Therefore,
+\[
+d(x_{t+1}, x_t) \leq d(x_{t+1}, x^*) + d(x^*, x_t) \to 0
+\]
+as \(t \to \infty\). Therefore,
+\[
+\lim_{T \to \infty} \frac{1}{T} \sum_{t=0}^{T} d(x_{t+1}, x_t) = 0.
+\]
+Hence, \(S(\alpha) = 0\).
+\end{proof}
+
+\begin{lemma}
+A non-trivial periodic attractor implies that S > 0.
+\end{lemma}
+
+\begin{proof}
+Suppose the trajectory converges to a periodic orbit 
+\[
+\mathcal O = \{z_0, z_1, \ldots, z_{p-1}\}
+\] for some \(p > 1\),
+with \(F_{\alpha}(z_i) = z_{i+1}\) and \(F_{\alpha}(z_{p-1}) = z_0\) for
+\(i = 0, 1, \ldots, p-1\).
+Let \(T = qp + r\) such that \(0 \leq r < p\). Then,
+\[
+\frac{1}{T}\sum_{t=0}^{T} d(x_{t+1}, x_t) = \frac{1}{qp + r} 
+(q\sum_{i=0}^{p-1} d(z_i, z_{i+1}) + \sum_{t=0}^{r-1} d(z_t, z_{t+1}))
+\]
+Given as \(T \to \infty\) then \(q \to \infty\) then,
+\[
+\lim_{T \to \infty} \frac{1}{T} \sum_{t=0}^{T} d(x_{t+1}, x_t) = 
+\lim_{q \to \infty} \frac{1}{p + r/q} 
+\sum_{i=0}^{p-1} d(z_i, z_{i+1}) + \frac{1}{qp + r}\sum_{t=0}^{r-1} d(z_t, z_{t+1}).
+\]
+Therefore,
+\[
+\lim_{T \to \infty} \frac{1}{T} \sum_{t=0}^{T} d(x_{t+1}, x_t) = 
+\frac{1}{p}\sum_{i=0}^{p-1} d(z_i, z_{i+1}).
+\]
+Hence, given \(z_{i+1} \neq z_i\) then for all \(i = 0, 1, \ldots, p-1\) then \(S(\alpha) > 0\).
+
+\end{proof}
+
+
+\begin{lemma}
+The endpoint attractors are not topologically conjugate.
+\end{lemma}
+
+\begin{proof}
+
+Suppose there exists\(\alpha, \alpha' \in [-1, 1]\) such that
+\(S(\alpha) = 0\) and \(S(\alpha') > 0\). Then, by lemma 1 
+\(F_\alpha(x)\) has a fixed-point attractor \(A = \{x^*\}\) and by lemma 2
+\(F_{\alpha'}(x)\) has a periodic attractor \(A' = \{z_0, z_1, \ldots, z_{p-1}\}\).
+
+Assume there exists a conjugate homeomorphism 
+\(h: A \to A'\) such that
+\(h \circ F_\alpha = F_{\alpha'} \circ h\). Given \(F_\alpha(x^*) = x^*\) 
+then \(h(F_\alpha(x^*)) = F_{\alpha'}(h(x^*))\) which results in
+\(F_{\alpha'}(h(x^*)) = h(x^*)\).
+Which implies \(h(x^*)\) is a fixed-point of \(F_{\alpha'}\) which contradicts the assumption that \(S(\alpha') > 0\).
+Therefore, the endpoint attractors are not topologically conjugate.
+\end{proof}
+
+We can now combine the three lemmas to obtain the main result.
+
+\begin{proof}
+By lemma 8 \(S(\alpha) = 0\) implies the relevant attractor of \(F_\alpha\) 
+is a fixed-point. By lemma 9 \(S(\alpha') > 0\) implies the relevant attractor of 
+\(F_{\alpha'}\) is a non-trivial periodic orbit or vice-versa. 
+By lemma 10, these two attractor dynamics are not topologically conjugate.
+
+Suppose for contradiction no bifurcation parameter \(\alpha^* \in [\alpha, \alpha']\)
+exists. Then the relevant attractor remains stable, so its topological type cannot
+change continuously from a structurally stable regime to another without passing
+through a parameter at which structural stability fails, hence
+\(F_\alpha \sim F_{\alpha'}\) which contradicts lemma 10. 
+Therefore, a bifurcation parameter \(\alpha^* \in [\alpha, \alpha']\) exists.
+\end{proof}
+
+\clearpage 
+\bibliographystyle{apalike}
+\bibliography{refs}
+
+\end{document}
